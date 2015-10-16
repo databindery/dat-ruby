@@ -38,6 +38,13 @@ describe Dat::Repository do
         subject
       end
     end
+    context 'with a message' do
+      subject { repo.import(dataset:'billion_flowers', file: file_path, message:'This is my message.') }
+      it 'provides the log message to dat' do
+        expect(repo).to receive(:run_command).with("dat import #{file_path} -d billion_flowers -m \"This is my message.\"")
+        subject
+      end
+    end
   end
 
   describe 'diff' do

@@ -12,7 +12,7 @@ module Dat
       run_command "dat init --path=#{dir} --no-prompt"
     end
 
-    def import(file: nil, data: nil, dataset: , key: nil)
+    def import(file: nil, data: nil, dataset: , key: nil, message: nil)
       raise ArgumentError, "You must provide either a file or (string) data" unless data || file
       command =  "dat import"
       if data
@@ -23,6 +23,7 @@ module Dat
 
       command << " -d #{dataset}"
       command << " -k #{key}" if key
+      command << " -m \"#{message}\"" if message
 
       run_command command
     end
