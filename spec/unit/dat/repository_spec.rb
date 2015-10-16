@@ -14,6 +14,24 @@ describe Dat::Repository do
     end
   end
 
+  describe 'datasets' do
+    let(:datasets_json) { '{"datasets":["urls","scores","addresses"]}' }
+    subject {repo.datasets}
+    it 'gets the list of datasets from dat' do
+      expect(repo).to receive(:run_command).with("dat datasets --json").and_return(datasets_json)
+      expect(subject).to eq ["urls","scores","addresses"]
+    end
+  end
+
+  describe 'forks' do
+    let(:forks_json) { '{"forks":["78fe797318e01985d2ff906875ec5764d346b03310275392e319d1425f0d30bb","424a463d9a400fa5aa9b1a35284130852dfc584e206253cfd9b403175a3877d2"]}' }
+    subject {repo.forks}
+    it 'gets the list of forks from dat' do
+      expect(repo).to receive(:run_command).with("dat forks --json").and_return(forks_json)
+      expect(subject).to eq ["78fe797318e01985d2ff906875ec5764d346b03310275392e319d1425f0d30bb","424a463d9a400fa5aa9b1a35284130852dfc584e206253cfd9b403175a3877d2"]
+    end
+  end
+
   describe 'import' do
     let(:file_path) { '/foo/bar' }
     context 'a file' do

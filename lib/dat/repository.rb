@@ -16,8 +16,14 @@ module Dat
       run_and_parse_response "dat status --json"
     end
 
+    def datasets
+      json = run_and_parse_response "dat datasets --json"
+      json["datasets"]
+    end
+
     def forks
-      run_and_parse_response "dat forks --json"
+      json = run_and_parse_response "dat forks --json"
+      json["forks"]
     end
 
     def import(file: nil, data: nil, dataset: , key: nil, message: nil)
@@ -73,7 +79,12 @@ module Dat
     end
 
     def run_and_parse_response(command)
-      parse_ndj( run_command(command) )
+      raw_json = run_command(command)
+      if raw_json.include?("}\n")
+        parse_ndj(raw_json)
+      else
+        JSON.parse(raw_json)
+      end
     end
 
     def parse_ndj(ndj_json)
