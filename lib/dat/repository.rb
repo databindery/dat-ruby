@@ -12,6 +12,14 @@ module Dat
       run_command "dat init --path=#{dir} --no-prompt"
     end
 
+    def status
+      run_and_parse_response "dat status --json"
+    end
+
+    def forks
+      run_and_parse_response "dat forks --json"
+    end
+
     def import(file: nil, data: nil, dataset: , key: nil, message: nil)
       raise ArgumentError, "You must provide either a file or (string) data" unless data || file
       command =  "dat import"
@@ -48,13 +56,11 @@ module Dat
     # return dat log in json form
     # the json is sorted in chronological order, so the most recent commits are listed last
     def log
-      raw_json = run_command "dat log --json"
-      parse_ndj(raw_json)
+      run_and_parse_response "dat log --json"
     end
 
     def diff(ref1, ref2=nil)
-      raw_json = run_command "dat diff --json #{ref1} #{ref2}"
-      parse_ndj(raw_json)
+      run_and_parse_response "dat diff --json #{ref1} #{ref2}"
     end
 
     private
@@ -64,6 +70,10 @@ module Dat
     #   run_command "dat log --json"
     def run_command(command)
       Dir.chdir(dir) { %x(#{command}) }
+    end
+
+    def run_and_parse_response(command)
+      parse_ndj( run_command(command) )
     end
 
     def parse_ndj(ndj_json)
