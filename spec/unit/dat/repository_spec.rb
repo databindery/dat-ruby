@@ -126,6 +126,36 @@ describe Dat::Repository do
     end
   end
 
+  describe 'push' do
+    let(:remote) { 'ssh://boo@widgets.com:dat/widget_inventory'}
+    let(:push_json) { '{"version":"02ad87accca3ab5fbbe2d073d99a617d2c1c6b3bbf8db5534552c9fd186bbe02"}'}
+    subject { repo.push(remote: remote) }
+    it 'tells dat to push to a remote dat repo' do
+      expect(repo).to receive(:run_command).with("dat push #{remote} --json").and_return(push_json)
+      subject
+    end
+  end
+
+  describe 'pull' do
+    let(:remote) { 'ssh://boo@widgets.com:dat/widget_inventory'}
+    let(:pull_json) { '{"version":"02ad87accca3ab5fbbe2d073d99a617d2c1c6b3bbf8db5534552c9fd186bbe02"}'}
+    subject { repo.pull(remote: remote) }
+    it 'tells dat to pull from a remote dat repo' do
+      expect(repo).to receive(:run_command).with("dat pull #{remote} --json").and_return(pull_json)
+      subject
+    end
+  end
+
+  describe 'replicate' do
+    let(:remote) { 'ssh://boo@widgets.com:dat/widget_inventory'}
+    let(:replicate_json) { '{"version":"02ad87accca3ab5fbbe2d073d99a617d2c1c6b3bbf8db5534552c9fd186bbe02"}'}
+    subject { repo.replicate(remote: remote) }
+    it 'tells dat to replicate to/from a remote dat repo' do
+      expect(repo).to receive(:run_command).with("dat replicate #{remote} --json").and_return(replicate_json)
+      subject
+    end
+  end
+
   describe 'log' do
     subject { repo.log }
     it 'parses the log info from dat' do
