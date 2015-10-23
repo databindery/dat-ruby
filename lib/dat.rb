@@ -5,6 +5,8 @@ require 'yaml'
 
 module Dat
   autoload :Repository, File.dirname(__FILE__)+'/dat/repository'
+  autoload :Diff, File.dirname(__FILE__)+'/dat/concerns/diff'
+  autoload :Export, File.dirname(__FILE__)+'/dat/concerns/export'
 
   # dat returned an error
   class Error < RuntimeError; end
